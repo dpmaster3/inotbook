@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/dpmaster3.github.io/inotbook/static/css/main.e6c13ad2.css",
+    "main.js": "/dpmaster3.github.io/inotbook/static/js/main.b4dad093.js",
+    "index.html": "/dpmaster3.github.io/inotbook/index.html",
+    "main.e6c13ad2.css.map": "/dpmaster3.github.io/inotbook/static/css/main.e6c13ad2.css.map",
+    "main.b4dad093.js.map": "/dpmaster3.github.io/inotbook/static/js/main.b4dad093.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e6c13ad2.css",
+    "static/js/main.b4dad093.js"
+  ]
+}
