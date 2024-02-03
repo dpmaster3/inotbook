@@ -1,8 +1,13 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 
-const Login = () => {
+const Login = (props) => {
+  const {showAlert}=props
   const host = "http://localhost:5000";
   const [credentials, setCredentials] = useState({ email: "", password: "" });
+  
+  let history= useHistory()
+
   const handle = async (e) => {
     e.preventDefault();
     const response = await fetch(`${host}/api/auth/login`, {
@@ -15,8 +20,19 @@ const Login = () => {
         password: credentials.password,
       }),
     });
-    const json = response.json();
+    const json = await response.json();
+   
     console.log(json);
+    
+    if(json.success){
+      
+      localStorage.setItem('token',json.authtoken);
+      history.push("/")
+      showAlert("Logged in","success")
+    }
+    else{
+      showAlert("invaild credentials","danger")
+    }
   };
   const onChange = (e) => {
     setCredentials({
@@ -26,30 +42,33 @@ const Login = () => {
   };
   return (
     <div>
+      <h2>Login to view notes</h2>
       <form onSubmit={handle}>
-        <div class="mb-3">
-          <label htmlFor="exampleInputEmail1" className="form-label">
+        <div className="mb-3">
+          <label htmlFor="email" className="form-label">
             Email address
           </label>
           <input
             value={credentials.email}
+            name="email"
             onChange={onChange}
             type="email"
             className="form-control"
-            id="exampleInputEmail1"
+            id="email"
             aria-describedby="emailHelp"
           />
         </div>
-        <div class="mb-3">
-          <label htmlFor="exampleInputPassword1" className="form-label">
+        <div className="mb-3">
+          <label htmlFor="password" className="form-label">
             Password
           </label>
           <input
+            name="password"
             value={credentials.password}
             onChange={onChange}
             type="password"
             className="form-control"
-            id="exampleInputPassword1"
+            id="password"
           />
         </div>
 

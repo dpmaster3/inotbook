@@ -1,17 +1,25 @@
-import React, { useEffect } from "react";
+import React from "react";
 import noteContext from "../contexts/notes/notesContext";
 import { useContext } from "react";
 import Noteitem from "./Noteitem";
 import AddNote from "./AddNote";
 import { useState } from "react";
+import { useHistory } from "react-router-dom";
 
-function Notes() {
+function Notes(props) {
+  let history= useHistory()
   const context = useContext(noteContext);
   // eslint-disable-next-line
   const { notes, getNotes, editNote } = context;
-  useEffect(() => {
+  if(localStorage.getItem('token')){
     getNotes();
-  }, []);
+  }
+  else{
+    history.push("/login")
+  }
+  const {showAlert}=props
+  
+  
   const [note, setNote] = useState({
     eid: "",
     etitle: "",
@@ -39,7 +47,7 @@ function Notes() {
 
   return (
     <div>
-      <AddNote />
+      <AddNote showAlert />
 
       <div
         className="modal fade"
@@ -131,7 +139,7 @@ function Notes() {
       <div className="row my-3">
         <h2>Your notes</h2>
         {notes.length > 0 ? (
-          notes.map((note) => <Noteitem key={note._id} updateNote={updateNote} note={note} />)
+          notes.map((note) => <Noteitem key={note._id} updateNote={updateNote} note={note} showAlert={showAlert} />)
         ) : (
           <p>No notes available</p>
         )}

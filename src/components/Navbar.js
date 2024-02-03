@@ -3,6 +3,9 @@ import { NavLink, useLocation } from "react-router-dom";
 
 function Navbar() {
   let location = useLocation();
+  const handleLogout=()=>{
+    localStorage.removeItem('token');
+  }
 
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary">
@@ -49,10 +52,12 @@ function Navbar() {
               </NavLink>
             </li>
           </ul>
-          <form className="d-flex" role="search">
+          {!localStorage.getItem('token')?<form className="d-flex" role="search">
           <NavLink exact className="btn btn-primary mx-1" to="/login" role="button">Login</NavLink>
           <NavLink exact className="btn btn-primary mx-1" to="/signup" role="button">Signup</NavLink> 
-          </form>
+          </form>:
+          <NavLink exact className="btn btn-primary mx-1" to="/login" role="button" onClick={handleLogout}>Logout</NavLink>
+          }
         </div>
       </div>
     </nav>

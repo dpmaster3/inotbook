@@ -11,10 +11,11 @@ router.post(
   "/createuser",
   [
     body("name").notEmpty().escape(),
-    body("password").isStrongPassword().escape(),
     body("email").isEmail().escape(),
+    body("password").isStrongPassword().escape(),
   ],
   async (req, res) => {
+    let success=false
     const result = validationResult(req);
     if (!result.isEmpty()) {
       return res.status(400).json({ errors: result.array() });
@@ -42,7 +43,9 @@ router.post(
       };
       const jwtScreet = process.env.JWT_SECRET || "default_secret";
       const authtoken = jwt.sign(data, jwtScreet); // Corrected variable name
-      res.json({ authtoken }); // Respond with the token
+      success=true
+      
+      res.json({ success,authtoken }); // Respond with the token
     } catch (error) {
       console.log(error.message);
       res.status(500).send("Some Internal server error occurred");
@@ -54,10 +57,11 @@ router.post(
 router.post(
   "/login",
   [
-    body("password").isStrongPassword().escape(),
     body("email").isEmail().escape(),
+    body("password").isStrongPassword().escape(),
   ],
   async (req, res) => {
+    let success=false
     const result = validationResult(req);
     if (!result.isEmpty()) {
       return res.status(400).json({ errors: result.array() });
@@ -79,7 +83,8 @@ router.post(
       };
       const jwtScreet = process.env.JWT_SECRET || "default_secret";
       const authtoken = jwt.sign(data, jwtScreet);
-      res.json({ authtoken });
+      success=true;
+      res.json({ success,authtoken });
     } catch (error) {
       console.log(error.message);
       res.status(500).send("Some Internal server error occurred");

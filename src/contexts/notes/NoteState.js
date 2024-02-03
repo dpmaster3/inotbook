@@ -3,6 +3,7 @@ import noteContext from "./notesContext";
 import { useState } from "react";
 
 const NoteState=(props)=>{
+  
   const host="http://localhost:5000";
   const notesInitial=[]
 const [notes,setNotes]=useState(notesInitial)
@@ -17,35 +18,33 @@ const addNote=async(title,description,tag)=>{
     method: "POST", 
     headers: {
       "Content-Type": "application/json",
-      "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjU5ZDdiZTEzZTI0YWQxZGFmZmFjMmZmIn0sImlhdCI6MTcwNDgxOTY4MX0.ZnYwHwJUN-UVo-bh7XPHVrrJPv024uAPw6JVd6asFho"
+      "auth-token": localStorage.getItem('token')
     },
     
     body: JSON.stringify({title,description,tag}), 
   });
-  const json =response.json();
-  console.log(json)
-    const note={
-        "_id": "6596fad7a6c48724c0124fe0",
-      "user": "6595a9bcc19fd6d7b9926aec",
-      "title": title,
-      "description": description,
-      "tag": tag,
-      "__v": 0
-    };
+  const note =response.json();
+  
+    
     setNotes(notes.concat(note))
 }
 //Get all Notes
 const getNotes= async()=>{
+  try {
   const response = await fetch(`${host}/api/notes/fetchallnotes`, {
     method: "GET", 
     headers: {
       "Content-Type": "application/json",
-      "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjU5ZDdiZTEzZTI0YWQxZGFmZmFjMmZmIn0sImlhdCI6MTcwNDgxOTY4MX0.ZnYwHwJUN-UVo-bh7XPHVrrJPv024uAPw6JVd6asFho"
+      "auth-token": localStorage.getItem('token')
     },
   });
   const json =await response.json();
   console.log(json)
   setNotes(json);
+} catch (error) {
+  console.error('Error fetching notes:', error);
+    
+  }
 }
 
 //delete note
@@ -54,7 +53,7 @@ const deleteNote= async(id)=>{
     method: "DELETE", 
     headers: {
       "Content-Type": "application/json",
-      "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjU5ZDdiZTEzZTI0YWQxZGFmZmFjMmZmIn0sImlhdCI6MTcwNDgxOTY4MX0.ZnYwHwJUN-UVo-bh7XPHVrrJPv024uAPw6JVd6asFho"
+      "auth-token": localStorage.getItem('token')
     }, 
   });
   const json =response.json(); 
@@ -71,7 +70,7 @@ const editNote= async(id,title,description,tag)=>{
     method: "PUT", 
     headers: {
       "Content-Type": "application/json",
-      "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjU5ZDdiZTEzZTI0YWQxZGFmZmFjMmZmIn0sImlhdCI6MTcwNDgxOTY4MX0.ZnYwHwJUN-UVo-bh7XPHVrrJPv024uAPw6JVd6asFho"
+      "auth-token": localStorage.getItem('token')
     },
     
     body: JSON.stringify({title,description,tag}), 
